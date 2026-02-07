@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import connectDB from './config/connectDB.js';
 import router from './routes/authRoutes.js';
+import songRouter from './routes/songRoutes.js';
 
 dotenv.config();
 const app = express();
@@ -25,7 +26,7 @@ const PORT = process.env.PORT || 3030;
 
 
 
-
+app.use('/api/song', songRouter);
 app.use('/api/auth', router);
 
 app.listen(PORT, ()=>{
