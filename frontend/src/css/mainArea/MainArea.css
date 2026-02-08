@@ -1,8 +1,0 @@
-.mainarea-root {
-  @apply flex flex-col h-full min-h-0;
-}
-
-/* This is the ONLY scrolling container */
-.mainarea-scroll {
-  @apply flex-1 min-h-0 overflow-hidden;
-}
