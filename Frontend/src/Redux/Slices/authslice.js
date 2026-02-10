@@ -18,14 +18,14 @@ const authSlice = createSlice({
             state.error = null;
         },
 
-        setuser : (state, action) => {
+        setuser: (state, action) => {
             state.user = action.payload.user;
             state.token = action.payload.token;
             state.isAuthenticated = true;
             state.isLoading = false;
             state.error = null;
 
-            if(action.payload.token) {
+            if (action.payload.token) {
                 localStorage.setItem("token", action.payload.token);
 
             }
@@ -48,7 +48,7 @@ const authSlice = createSlice({
 
         updateFavoriteSongs: (state, action) => {
             if (state.user) {
-                state.user.favoriteSongs = action.payload;
+                state.user.favorites = action.payload;
             }
         },
 

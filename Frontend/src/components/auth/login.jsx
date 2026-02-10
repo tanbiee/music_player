@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import validator from "validator";
 import axios from "axios";
 import { setLoading, setuser, setError, clearError } from "../../Redux/Slices/authslice";
-import { closeAuthModal } from "../../Redux/Slices/uislices";
+import { closeAuthModal, switchAuthMode } from "../../Redux/Slices/uislices";
+import "../../css/auth/Login.css";
 
 const Login = () => {
     const [email, setemail] = useState("");
@@ -52,11 +53,11 @@ const Login = () => {
     };
 
     return (
-        <div className="login--wrapper">
+        <div className="login-wrapper">
             <h3 className="login-title">Welcome Back</h3>
             <p className="login-subtitle">Please Enter your detail to login</p>
 
-            <form className="Login-form" onSubmit={handleLogin}>
+            <form className="login-form" onSubmit={handleLogin}>
                 <Input
                     value={email}
                     onChange={(e) => setemail(e.target.value)}
@@ -74,9 +75,21 @@ const Login = () => {
 
                 {error && <div className="login-error">{error}</div>}
 
-                <button type="submit" className="Login-submit-button" disabled={isLoading}>
+                <button type="submit" className="login-submit-btn" disabled={isLoading}>
                     <span>{isLoading ? "Logging In..." : "Login"}</span>
                 </button>
+
+                <div className="login-switch-wrapper" style={{ marginTop: "1rem", textAlign: "center" }}>
+                    <p style={{ color: "#9ca3af" }}>
+                        Don't have an account? {" "}
+                        <span
+                            onClick={() => dispatch(switchAuthMode("signup"))}
+                            style={{ cursor: "pointer", color: "#a855f7", fontWeight: "bold" }}
+                        >
+                            Signup
+                        </span>
+                    </p>
+                </div>
             </form>
         </div>
     );

@@ -14,7 +14,12 @@ const SongDetail = ({ currentSong }) => {
   return (
     <div className="songdetail-root">
       <div className="songdetail-image-wrapper">
-        <img src={data.image} alt={data.name} className="songdetail-image" />
+        <img
+          src={data.cover || data.image || data.Image || fallback.image}
+          alt={data.name}
+          className="songdetail-image"
+          onError={(e) => { e.target.onerror = null; e.target.src = fallback.image; }}
+        />
       </div>
 
       <div className="songdetail-text">

@@ -1,4 +1,4 @@
-import { useReducer, useRef, useState } from "react";
+import { useReducer, useRef, useState, useEffect } from "react";
 
 const initialAudioState = {
     isPlaying: false,
@@ -7,14 +7,12 @@ const initialAudioState = {
     volume: 1,
     loopEnabled: false,
     shuffleEnabled: false,
+    playbackSpeed: 1,
     currentTime: 0,
     duration: 0,
-    audioSrc: null,
-    audioRef: null,
-    audioList: [],
     currentAudioIndex: null,
     currentSong: null,
-}
+};
 
 // Reducers
 function audioreducer(state, action) {
@@ -31,9 +29,9 @@ function audioreducer(state, action) {
             return { ...state, isMuted: false };
         case "SET_VOLUME":
             return { ...state, volume: action.payload };
-        case "SET_LOOP":
+        case "TOGGLE_LOOP":
             return { ...state, loopEnabled: !state.loopEnabled, shuffleEnabled: false };
-        case "SET_SHUFFLE":
+        case "TOGGLE_SHUFFLE":
             return { ...state, shuffleEnabled: !state.shuffleEnabled, loopEnabled: false };
         case "SET_PLAYBACK_SPEED":
             return { ...state, playbackSpeed: action.payload };
@@ -41,6 +39,8 @@ function audioreducer(state, action) {
             return { ...state, currentAudioIndex: action.payload.index, currentSong: action.payload.song, isLoading: true };
         case "SET_CURRENT_TIME":
             return { ...state, currentTime: action.payload };
+        case "SET_DURATION":
+            return { ...state, duration: action.payload };
         default:
             return state;
     }
@@ -49,23 +49,11 @@ function audioreducer(state, action) {
 const useAudioPlayer = (songs) => {
     const [audioState, dispatch] = useReducer(audioreducer, initialAudioState);
     const audioRef = useRef(null);
-    const [isMuted, setIsMuted] = useState(false);
-    const [volume, setVolume] = useState(1);
-    const [loopEnabled, setLoopEnabled] = useState(false);
-    const [shuffleEnabled, setShuffleEnabled] = useState(false);
-    const [playbackSpeed, setPlaybackSpeed] = useState(1);
-    const [currentTime, setCurrentTime] = useState(0);
-    const [duration, setDuration] = useState(0);
-    const [audioSrc, setAudioSrc] = useState(null);
-    const [audioList, setAudioList] = useState([]);
-    const [currentAudioIndex, setCurrentAudioIndex] = useState(null);
-    const [currentSong, setCurrentSong] = useState(null);
     const previousVolumeRef = useRef(1);
-
 
     const playSongAtIndex = (index) => {
         if (!songs || songs.length === 0) {
-            console.warn("No song avaliable to play");
+            console.warn("No song available to play");
             return;
         }
 
@@ -75,21 +63,21 @@ const useAudioPlayer = (songs) => {
         }
 
         const song = songs[index];
-        // setCurrentAudioIndex(index);
-        // setCurrentSong(song);
         dispatch({ type: "SET_CURRENT_TRACK", payload: { index, song } });
         dispatch({ type: "SET_CURRENT_TIME", payload: 0 });
 
-        const audio = audioRef.current;
-        if (!audio) return;
-
-        dispatch({ type: "LOADING" });
-        audio.load();
-        audio.playbackRate = audioState.playbackSpeed;
-        audio
-            .play()
-            .then(() => dispatch({ type: "PLAY" }))
-            .catch((error) => console.error("Play Error", error));
+        // Trigger play logic in useEffect or directly if audioRef is ready
+        // But better to rely on state changes and effect, though here we force load
+        setTimeout(() => {
+            const audio = audioRef.current;
+            if (audio) {
+                dispatch({ type: "LOADING" });
+                audio.load();
+                audio.play()
+                    .then(() => dispatch({ type: "PLAY" }))
+                    .catch((error) => console.error("Play Error", error));
+            }
+        }, 0);
     };
 
     const handleTogglePlay = () => {
@@ -123,6 +111,9 @@ const useAudioPlayer = (songs) => {
                 playSongAtIndex(0);
             } else {
                 dispatch({ type: "PAUSE" });
+                // Optionally reset to start
+                dispatch({ type: "SET_CURRENT_TIME", payload: 0 });
+                if (audioRef.current) audioRef.current.currentTime = 0;
             }
         } else {
             playSongAtIndex(audioState.currentAudioIndex + 1);
@@ -137,22 +128,32 @@ const useAudioPlayer = (songs) => {
             return;
         }
 
+        // Check if songs exist
         const prevIndex = (audioState.currentAudioIndex - 1 + songs.length) % songs.length;
         playSongAtIndex(prevIndex);
     };
 
-
-
     const handleEnded = () => {
-        const audio = audioRef.current;
-        if (!audio) return;
+        // Auto play next logic
+        // If loop is on, it behaves like 'repeat one' OR 'repeat list'.
+        // Standard behavior: Loop usually means 'repeat list' or 'repeat one'.
+        // Code originally implemented 'repeat list' logic inside handleNext.
+        // But user might want 'repeat one'.
+        // Let's assume 'Loop' button means 'Repeat One' for now based on icon <RiLoopRightLine>?
+        // Actually usually Loop = Repeat List, Loop 1 = Repeat One.
+        // The original code had: if (loopEnabled) { audio.currentTime = 0; play... } which is Repeat One.
+        // Let's stick to Repeat One for 'Loop' since there is only one button?
+        // Wait, current icon is RiLoopRightLine.
+        // If the user wants Loop (Repeat List), then handleNext() logic is correct.
+        // If the user wants key "Loop" to mean "Repeat Current Song", then:
 
         if (audioState.loopEnabled) {
-            audio.currentTime = 0;
-            audio.play().then(() => { dispatch({ type: "PLAY" }); dispatch({ type: "SET_CURRENT_TIME", payload: 0 }) }).catch((error) => console.error("Play Error", error));
-        }
-
-        else {
+            const audio = audioRef.current;
+            if (audio) {
+                audio.currentTime = 0;
+                audio.play();
+            }
+        } else {
             handleNext();
         }
     };
@@ -166,6 +167,7 @@ const useAudioPlayer = (songs) => {
             audio.muted = false;
             dispatch({ type: "UNMUTE" });
             dispatch({ type: "SET_VOLUME", payload: restoreVolume });
+            audio.volume = restoreVolume;
         } else {
             previousVolumeRef.current = audioState.volume;
             audio.muted = true;
@@ -176,11 +178,11 @@ const useAudioPlayer = (songs) => {
     };
 
     const handleToggleLoop = () => {
-        dispatch({ type: "SET_LOOP" });
+        dispatch({ type: "TOGGLE_LOOP" });
     }
 
     const handleToggleShuffle = () => {
-        dispatch({ type: "SET_SHUFFLE" });
+        dispatch({ type: "TOGGLE_SHUFFLE" });
     };
 
     const handleSetPlaybackSpeed = (speed) => {
@@ -226,35 +228,40 @@ const useAudioPlayer = (songs) => {
     const handleLoadedMetadata = () => {
         const audio = audioRef.current;
         if (!audio) return;
-        setDuration(audio.duration || 0);
+        dispatch({ type: "SET_DURATION", payload: audio.duration || 0 });
+
+        // Apply duplicate state settings to audio element
         audio.playbackRate = audioState.playbackSpeed;
         audio.muted = audioState.isMuted;
         audio.volume = audioState.volume;
 
-        dispatch({ type: "PLAY" });
+        if (audioState.isPlaying) {
+            audio.play().catch(e => console.error(e));
+        }
     };
 
     return {
         // Audio ref
         audioRef,
 
-        // current Song state
+        // State
         currentIndex: audioState.currentAudioIndex,
         currentSong: audioState.currentSong,
         isPlaying: audioState.isPlaying,
         currentTime: audioState.currentTime,
-        duration,
+        duration: audioState.duration,
         volume: audioState.volume,
         isMuted: audioState.isMuted,
         playbackSpeed: audioState.playbackSpeed,
         loopEnabled: audioState.loopEnabled,
         shuffleEnabled: audioState.shuffleEnabled,
 
-        // Playback controls
+        // Controls
         playSongAtIndex,
         handleTogglePlay,
         handleNext,
         handlePrev,
+
         handleToggleMute,
         handleToggleLoop,
         handleToggleShuffle,
@@ -262,18 +269,10 @@ const useAudioPlayer = (songs) => {
         handleSeek,
         handleVolumeChange,
 
-        // Audio event handlers
+        // Event Handlers
         handleTimeUpdate,
         handleLoadedMetadata,
         handleEnded,
-
-        // feature control functions
-        handleToggleMute,
-        handleToggleLoop,
-        handleToggleShuffle,
-        handleSetPlaybackSpeed,
-        handleSeek,
-        handleVolumeChange,
     }
 };
 

@@ -1,11 +1,9 @@
 .homepage-root {
   @apply flex flex-col h-screen m-0 box-border;
-  background: linear-gradient(
-    to bottom right,
-    #111827,
-    #000000,
-    rgba(88, 28, 135, 0.2)
-  );
+  background: linear-gradient(to bottom right,
+      #111827,
+      #000000,
+      rgba(88, 28, 135, 0.2));
   overflow: hidden;
 }
 
@@ -16,11 +14,9 @@
 
 .homepage-sidebar {
   @apply flex-none w-[280px] p-4 flex flex-col min-h-0 box-border;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.5),
-    rgba(0, 0, 0, 0.3)
-  );
+  background: linear-gradient(to bottom,
+      rgba(0, 0, 0, 0.5),
+      rgba(0, 0, 0, 0.3));
   backdrop-filter: blur(40px);
   -webkit-backdrop-filter: blur(40px);
   border-right: 1px solid rgba(255, 255, 255, 0.05);
@@ -41,7 +37,7 @@
   z-index: 0;
 }
 
-.homepage-sidebar > * {
+.homepage-sidebar>* {
   position: relative;
   z-index: 1;
 }
@@ -49,6 +45,7 @@
 .homepage-content {
   @apply flex-1 px-6 py-3 flex flex-col min-h-0 box-border overflow-hidden;
 }
+
 /* Apply scrollbar styles */
 .homepage-content::-webkit-scrollbar {
   width: 10px;
@@ -76,27 +73,27 @@
   left: -50%;
   width: 200%;
   height: 200%;
-  background: radial-gradient(
-    circle at center,
-    rgba(168, 85, 247, 0.03) 0%,
-    transparent 50%
-  );
+  background: radial-gradient(circle at center,
+      rgba(168, 85, 247, 0.03) 0%,
+      transparent 50%);
   animation: backgroundPulse 15s ease-in-out infinite;
   pointer-events: none;
   z-index: 0;
 }
 
-.homepage-content > * {
+.homepage-content>* {
   position: relative;
   z-index: 1;
 }
 
 @keyframes backgroundPulse {
+
   0%,
   100% {
     transform: translate(0, 0) scale(1);
     opacity: 0.5;
   }
+
   50% {
     transform: translate(-10%, -10%) scale(1.1);
     opacity: 0.8;

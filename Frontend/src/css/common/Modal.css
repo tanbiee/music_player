@@ -2,16 +2,19 @@
 
 .modal-backdrop {
   position: fixed;
-  inset: 0; /* top/right/bottom/left 0 */
+  inset: 0;
+  /* top/right/bottom/left 0 */
   background: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 999; /* above everything */
+  z-index: 2000;
+  /* above everything */
 }
 
 .modal-content {
-  background: #0b0b0b; /* dark card */
+  background: #0b0b0b;
+  /* dark card */
   color: #fff;
   border-radius: 8px;
   padding: 20px;

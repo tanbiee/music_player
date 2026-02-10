@@ -25,6 +25,7 @@
 .songlist-scroll::-webkit-scrollbar {
   width: 8px;
 }
+
 .songlist-scroll::-webkit-scrollbar-thumb {
   background: rgba(168, 85, 247, 0.4);
   border-radius: 9999px;
@@ -47,15 +48,19 @@
 .col-index {
   width: 60px;
 }
+
 .col-name {
   width: 35%;
 }
+
 .col-artist {
   width: 25%;
 }
+
 .col-year {
   width: 15%;
 }
+
 .col-duration {
   width: 100px;
 }
@@ -82,6 +87,7 @@
 .th-index {
   text-align: center;
 }
+
 .th-duration {
   text-align: right;
 }
@@ -96,11 +102,9 @@
 }
 
 .songlist-row-active {
-  background: linear-gradient(
-    90deg,
-    rgba(168, 85, 247, 0.25),
-    rgba(236, 72, 153, 0.18)
-  );
+  background: linear-gradient(90deg,
+      rgba(168, 85, 247, 0.25),
+      rgba(236, 72, 153, 0.18));
 }
 
 /* ===============================
@@ -125,26 +129,27 @@
   text-align: right;
   color: rgba(156, 163, 175, 0.85);
 }
+
 /* ===============================
    Empty State
 ================================ */
 .songlist-empty {
-  @apply flex flex-col items-center justify-center
+  /* @apply flex flex-col items-center justify-center
          text-center gap-2
          h-[260px] w-full
          rounded-2xl
          bg-white/5
          border border-white/10
-         backdrop-blur-md;
+         backdrop-blur-md; */
   animation: fadeInUp 0.4s ease-out;
 }
 
 .songlist-empty-text {
-  @apply text-lg font-semibold;
+  /* @apply text-lg font-semibold; */
   color: rgba(168, 85, 247, 0.9);
 }
 
 .songlist-empty-subtext {
-  @apply text-sm;
+  /* @apply text-sm; */
   color: rgba(156, 163, 175, 0.9);
 }

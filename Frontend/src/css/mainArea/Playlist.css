@@ -1,5 +1,4 @@
 .playlist-root {
-  @apply max-h-[200px] overflow-hidden;
   @apply mb-2 text-white;
   animation: fadeIn 0.8s ease-out;
 }
@@ -8,6 +7,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -28,6 +28,7 @@
     opacity: 0;
     transform: translateX(-30px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -43,8 +44,7 @@
 }
 
 .playlist-card {
-  @apply flex flex-col items-center text-center p-2 rounded-xl 
-         transition-all duration-300 cursor-pointer;
+  @apply flex flex-col items-center text-center p-2 rounded-xl transition-all duration-300 cursor-pointer;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(10px);
@@ -59,6 +59,7 @@
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -69,15 +70,19 @@
 .playlist-card:nth-child(1) {
   animation-delay: 0.1s;
 }
+
 .playlist-card:nth-child(2) {
   animation-delay: 0.2s;
 }
+
 .playlist-card:nth-child(3) {
   animation-delay: 0.3s;
 }
+
 .playlist-card:nth-child(4) {
   animation-delay: 0.4s;
 }
+
 .playlist-card:nth-child(5) {
   animation-delay: 0.5s;
 }
@@ -87,11 +92,9 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    135deg,
-    rgba(168, 85, 247, 0.1),
-    rgba(236, 72, 153, 0.1)
-  );
+  background: linear-gradient(135deg,
+      rgba(168, 85, 247, 0.1),
+      rgba(236, 72, 153, 0.1));
   opacity: 0;
   transition: opacity 0.3s ease;
   border-radius: 0.75rem;
@@ -152,8 +155,9 @@
 
 @media (max-width: 768px) {
   .playlist-root {
-    @apply max-h-[140px];
+    /* @apply max-h-[140px]; */
   }
+
   .playlist-grid {
     @apply grid-cols-3 gap-3;
   }

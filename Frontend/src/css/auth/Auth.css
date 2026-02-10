@@ -1,3 +1,5 @@
+@reference "tailwindcss";
+
 .auth-container {
   display: flex;
   justify-content: flex-end;
@@ -10,6 +12,7 @@
     opacity: 0;
     transform: translateY(-20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -36,7 +39,8 @@
   opacity: 0;
   transition: opacity 0.3s ease;
   border-radius: 12px;
-  z-index: -1; /* ✅ FIX */
+  z-index: -1;
+  /* ✅ FIX */
 }
 
 .auth-btn:active {
@@ -53,11 +57,9 @@
 }
 
 .auth-btn.signup::before {
-  background: linear-gradient(
-    135deg,
-    rgba(168, 85, 247, 0.2),
-    rgba(236, 72, 153, 0.2)
-  );
+  background: linear-gradient(135deg,
+      rgba(168, 85, 247, 0.2),
+      rgba(236, 72, 153, 0.2));
 }
 
 .auth-btn.signup:hover {

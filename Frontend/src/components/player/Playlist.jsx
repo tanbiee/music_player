@@ -1,7 +1,8 @@
 import React from "react";
 import "../../css/mainArea/Playlist.css";
+import { FiBox } from "react-icons/fi";
 
-const Playlist = () => {
+const Playlist = ({ onCategorySelect, selectedCategory }) => {
   const items = [
     {
       id: 1,
@@ -32,12 +33,25 @@ const Playlist = () => {
 
   return (
     <div className="playlist-root">
-      <h1 className="playlist-title">Playlists</h1>
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="playlist-title">Playlists</h1>
+        <div className="w-8 h-8 bg-red-500 rounded-lg flex items-center justify-center cursor-pointer hover:bg-red-600 transition-colors">
+          <FiBox className="text-white text-xl" />
+        </div>
+      </div>
 
       <div className="playlist-wrapper">
         <div className="playlist-grid">
           {items.map((item) => (
-            <div className="playlist-card" key={item.id}>
+            <div
+              className={`playlist-card ${selectedCategory === item.label ? "selected" : ""}`}
+              key={item.id}
+              onClick={() => onCategorySelect && onCategorySelect(item.label)}
+              style={{
+                cursor: "pointer",
+                border: selectedCategory === item.label ? "2px solid #a855f7" : "none"
+              }}
+            >
               <img src={item.img} alt={item.label} className="playlist-image" />
               <h4 className="playlist-label">{item.label}</h4>
             </div>

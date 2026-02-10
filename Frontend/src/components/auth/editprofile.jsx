@@ -5,6 +5,7 @@ import axios from "axios";
 import "../../css/auth/editprofile.css";
 import Input from "../Common/input";
 import { CiUser } from "react-icons/ci";
+import { MdAddAPhoto } from "react-icons/md";
 
 const EditProfile = ({ onClose }) => {
     const dispatch = useDispatch();
@@ -102,7 +103,7 @@ const EditProfile = ({ onClose }) => {
     return (
         <div className="edit-profile-wrapper">
             <h3 className="editprofile-title">Edit Profile</h3>
-            <p className="editprofile-subtitle">Update your profile information</p>
+            <p className="editprofile-subtitle">Update your account details</p>
 
             <form className="edit-profile-form" onSubmit={handleSubmit}>
 
@@ -117,11 +118,11 @@ const EditProfile = ({ onClose }) => {
                                         <CiUser size={60} />
                                     </div>
                                 )}
+                                <label className="image-upload-icon-overlay">
+                                    <MdAddAPhoto size={16} />
+                                    <input type="file" accept="image/*" hidden onChange={handleImageChange} />
+                                </label>
                             </div>
-                            <label className="image-upload-btn">
-                                Change Photo
-                                <input type="file" accept="image/*" hidden onChange={handleImageChange} />
-                            </label>
                         </div>
                         <Input
                             label={"Name"}
@@ -141,15 +142,7 @@ const EditProfile = ({ onClose }) => {
                 )}
 
                 <div className="password-section">
-                    <button
-                        type="button"
-                        className="toggle-password-btn"
-                        onClick={() => setShowPasswordFields(!showPasswordFields)}
-                    >
-                        {showPasswordFields ? "Cancel Password Change" : "Change Password"}
-                    </button>
-
-                    {showPasswordFields && (
+                    {showPasswordFields ? (
                         <div className="password-fields">
                             <Input
                                 label={"Current Password"}
@@ -165,28 +158,36 @@ const EditProfile = ({ onClose }) => {
                                 value={newPassword}
                                 onChange={(e) => setNewPassword(e.target.value)}
                             />
+                            <button
+                                type="button"
+                                className="editprofile-password-toggle-link"
+                                onClick={() => setShowPasswordFields(false)}
+                            >
+                                Cancel Password Change
+                            </button>
                         </div>
+                    ) : (
+                        <button
+                            type="button"
+                            className="editprofile-password-toggle-link"
+                            onClick={() => setShowPasswordFields(true)}
+                        >
+                            Change Password
+                        </button>
                     )}
                 </div>
 
-                {error && <div className="error-message">{error}</div>}
+                {error && <div className="editprofile-error">{error}</div>}
 
-                <div className="form-actions">
-                    <button type="button" className="editprofile-password-toggle-btn"
-                        onClick={() => setShowPasswordFields(!showPasswordFields)}>
-                        {showPasswordFields ? "Cancel" : "Change Password"}
+                <div className="editprofile-actions">
+                    <button type="button" className="editprofile-btn-cancel"
+                        onClick={onClose}
+                        disabled={isLoading}>
+                        Cancel
                     </button>
-                    <div className="editprofile-actions">
-
-                        <button type="button" className="editprofile-btn-cancel"
-                            onClick={onClose}
-                            disabled={isLoading}>
-                            Cancel
-                        </button>
-                        <button type="submit" className="editprofile-btn-submit">
-                            {isLoading ? "Saving..." : "Save Changes"}
-                        </button>
-                    </div>
+                    <button type="submit" className="editprofile-btn-submit">
+                        {isLoading ? "Saving..." : "SAVE CHANGES"}
+                    </button>
                 </div>
             </form>
         </div>

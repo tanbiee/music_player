@@ -8,6 +8,7 @@
     opacity: 0;
     transform: translateY(-20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -20,10 +21,7 @@
 }
 
 .searchbar-input {
-  @apply w-full h-14 pl-5 pr-14
-    text-white text-base
-    rounded-2xl
-    transition-all duration-300;
+  @apply w-full h-14 pl-5 pr-14 text-white text-base rounded-2xl transition-all duration-300;
   background: rgba(255, 255, 255, 0.05);
   border: 2px solid rgba(168, 85, 247, 0.2);
   backdrop-filter: blur(10px);
@@ -46,8 +44,7 @@
 
 /* Search icon */
 .searchbar-icon {
-  @apply absolute right-5 top-1/2 -translate-y-1/2
-    pointer-events-none;
+  @apply absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none;
   color: rgba(168, 85, 247, 0.5);
   transition: all 0.3s ease;
 }
@@ -65,10 +62,12 @@
 }
 
 @keyframes pulse {
+
   0%,
   100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0.5;
   }
@@ -84,6 +83,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }

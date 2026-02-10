@@ -1,12 +1,12 @@
 import "../../css/mainArea/SongList.css";
 
-const SongList = ({ songs }) => {
+const SongList = ({ songs, onSongSelect }) => {
   if (!songs || songs.length === 0) {
     return (
       <div className="songlist-root">
-        <div className="songlist-empty">
-          <p className="songlist-empty-text">🎵 No songs found</p>
-          <span className="songlist-empty-subtext">
+        <div className="songlist-empty flex flex-col items-center justify-center text-center gap-2 h-[260px] w-full rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md">
+          <p className="songlist-empty-text text-lg font-semibold">🎵 No songs found</p>
+          <span className="songlist-empty-subtext text-sm">
             Try searching with a different keyword
           </span>
         </div>
@@ -41,7 +41,11 @@ const SongList = ({ songs }) => {
 
           <tbody>
             {songs.map((song, index) => (
-              <tr key={song.id}>
+              <tr
+                key={song.id}
+                className="songlist-row"
+                onClick={() => onSongSelect(index)}
+              >
                 <td className="songlist-td td-index">{index + 1}</td>
                 <td className="songlist-td">{song.name}</td>
                 <td className="songlist-td">{song.artist_name}</td>

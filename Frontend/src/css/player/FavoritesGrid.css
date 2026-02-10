@@ -1,0 +1,81 @@
+/* FavoritesGrid.css */
+.favorites-grid-root {
+    @apply w-full h-full p-6 overflow-y-auto;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.favorites-header {
+    @apply mb-6;
+}
+
+.favorites-title {
+    @apply text-2xl font-bold text-white mb-2;
+    letter-spacing: 0.5px;
+}
+
+.favorites-header-line {
+    @apply w-full h-[1px] bg-white/10;
+}
+
+.favorites-grid {
+    @apply grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6;
+}
+
+.fav-card {
+    @apply flex flex-col bg-white/5 rounded-xl p-3 transition-all duration-300 cursor-pointer relative;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.fav-card:hover {
+    @apply bg-white/10 -translate-y-1;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.fav-img-wrapper {
+    @apply relative w-full aspect-square rounded-lg overflow-hidden mb-3;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.fav-img {
+    @apply w-full h-full object-cover transition-transform duration-500;
+}
+
+.fav-card:hover .fav-img {
+    @apply scale-110;
+}
+
+/* Hover Overlay */
+.fav-overlay {
+    @apply absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 transition-opacity duration-300;
+    backdrop-filter: blur(2px);
+}
+
+.fav-card:hover .fav-overlay {
+    @apply opacity-100;
+}
+
+.fav-play-btn {
+    @apply w-12 h-12 rounded-full bg-purple-500 flex items-center justify-center text-white transform scale-0 transition-transform duration-300 hover:scale-110 hover:bg-purple-400;
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+}
+
+.fav-card:hover .fav-play-btn {
+    @apply scale-100;
+}
+
+.fav-info {
+    @apply flex flex-col gap-1;
+}
+
+.fav-name {
+    @apply text-white font-semibold truncate text-base;
+}
+
+.fav-artist {
+    @apply text-white/60 text-sm truncate;
+}
+
+/* Empty State */
+.favorites-empty {
+    @apply flex flex-col items-center justify-center h-[300px] text-center text-white/50;
+}
